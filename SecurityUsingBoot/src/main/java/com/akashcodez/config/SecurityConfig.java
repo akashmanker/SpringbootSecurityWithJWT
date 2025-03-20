@@ -1,0 +1,54 @@
+package com.akashcodez.config;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+
+@Configuration
+public class SecurityConfig {
+
+    @Autowired
+    private UserDetailsLoader userDetailsLoader;
+
+    @Bean
+    AuthenticationProvider getAuthenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsLoader);
+        return daoAuthenticationProvider;
+    }
+
+
+    @Bean
+    public SecurityFilterChain mySecurityConfig(HttpSecurity http)throws Exception{
+
+        http
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers("/app/**").permitAll()
+                        .antMatchers("/admin/**").hasAuthority("ADMIN")
+                        .antMatchers("/user/**").hasAuthority("USER")
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults()).csrf().disable()
+//                .formLogin(Customizer.withDefaults()).csrf().disable()      //for browser
+                .authenticationProvider(getAuthenticationProvider());
+
+        return  http.build();
+    }
+
+
+    @Bean
+    PasswordEncoder getPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+}
