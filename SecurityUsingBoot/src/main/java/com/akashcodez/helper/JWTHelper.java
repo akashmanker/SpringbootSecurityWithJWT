@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Component
 public class JWTHelper {
 
-    public static final long JWTTOKENVALIDITY = 10 * 60;  // for 10 minutes
+    public static final long JWTTOKENVALIDITY = 30 * 60;  // for 30 minutes
 
     private String secret = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
 

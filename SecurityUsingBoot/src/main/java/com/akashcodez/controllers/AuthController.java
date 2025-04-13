@@ -34,6 +34,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<JWTResponse> login(@RequestBody JWTRequest request) {
 
+
         this.doAuthenticate(request.getUseremail(), request.getPassword());
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUseremail());

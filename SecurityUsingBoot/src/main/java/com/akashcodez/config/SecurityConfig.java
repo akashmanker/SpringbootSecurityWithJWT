@@ -45,8 +45,8 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .antMatchers("/app/**","/auth/**").permitAll()
-                        .antMatchers("/admin/**").hasAuthority("ADMIN")
-                        .antMatchers("/user/**").hasAuthority("USER")
+//                        .antMatchers("/admin/**").hasAuthority("ADMIN")
+//                        .antMatchers("/user/**").hasAuthority("USER")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()).csrf().disable()

@@ -5,6 +5,7 @@ import com.akashcodez.entity.User;
 import com.akashcodez.service.TaskService;
 import com.akashcodez.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/admin")
 @RestController
 public class AdminController {
@@ -23,17 +25,21 @@ public class AdminController {
     @Autowired
     TaskService taskService;
 
+
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getAllUsers")
     public List<User> getUsers(){
         return userService.getAll();
     }
 
 
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getAllTasks")
     public List<Task> getTasks(){
         return taskService.getAll();
     }
 
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")
     public Task createAndAssignTask(@RequestBody Task task, HttpServletResponse response) throws IOException {
 
@@ -45,6 +51,7 @@ public class AdminController {
         return task;
     }
 
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("delete/{id}")
     public void deleteTask(@PathVariable("id")int id){
         taskService.deleteTask(id);
@@ -55,7 +62,7 @@ public class AdminController {
     //==================================================================================
 
 
-
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/dashboard/{id}")
     public String showDashboard(@PathVariable("id") int id){
         Optional<User> byId = userService.getById(id);
@@ -64,6 +71,7 @@ public class AdminController {
     }
 
 
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/profile/{id}")
     public String showProfile(@PathVariable("id") int id){
         Optional<User> byId = userService.getById(id);
